@@ -1,0 +1,360 @@
+/* ============================================
+   MI BIBLIA DIARIA — Estilos principales
+   Diseñado para adultos mayores: letra grande,
+   alto contraste, botones amplios.
+   ============================================ */
+
+/* --- RESET Y BASE --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --fs-base: 19px;
+  --color-fondo: #fdf8f2;
+  --color-fondo-card: #ffffff;
+  --color-texto: #1a1a1a;
+  --color-texto-suave: #4a4a4a;
+  --color-acento: #1a3a6b;
+  --color-acento-claro: #e8eef8;
+  --color-acento-hover: #122a52;
+  --color-borde: #d4c9bb;
+  --color-oro: #b08d4a;
+  --color-oro-claro: #fdf4e3;
+  --radio: 10px;
+  --sombra: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* MODO ALTO CONTRASTE */
+body.alto-contraste {
+  --color-fondo: #000000;
+  --color-fondo-card: #111111;
+  --color-texto: #ffffff;
+  --color-texto-suave: #dddddd;
+  --color-acento: #4a90e2;
+  --color-acento-claro: #001a33;
+  --color-borde: #666666;
+  --color-oro: #ffd700;
+  --color-oro-claro: #1a1500;
+}
+
+html { font-size: var(--fs-base); }
+
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.75;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- HEADER --- */
+.site-header {
+  background-color: var(--color-acento);
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-cross {
+  font-size: 2.2rem;
+  color: var(--color-oro);
+  line-height: 1;
+}
+
+.site-title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.site-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.75);
+  margin-top: 2px;
+}
+
+/* --- BOTONES ACCESIBILIDAD --- */
+.accesibilidad {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.btn-acc {
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 52px;
+  min-height: 48px;
+  border-radius: var(--radio);
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0 12px;
+}
+
+.btn-acc:hover, .btn-acc:focus {
+  background: rgba(255,255,255,0.3);
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* --- MAIN --- */
+.site-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+  flex: 1;
+  width: 100%;
+}
+
+/* --- DEVOCIONAL PLACEHOLDER --- */
+.devocional-wrapper {
+  margin-bottom: 2rem;
+}
+
+.devocional-placeholder {
+  background: var(--color-acento-claro);
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  color: var(--color-texto-suave);
+}
+
+.placeholder-icono {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  opacity: 0.4;
+}
+
+.placeholder-texto {
+  font-size: 1rem;
+  line-height: 1.7;
+  opacity: 0.7;
+}
+
+/* --- DIVISOR --- */
+.divisor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--color-texto-suave);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.divisor::before, .divisor::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: var(--color-borde);
+}
+
+/* --- LECTOR BÍBLICO --- */
+.lector-section {
+  background: var(--color-fondo-card);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 1.5rem;
+  box-shadow: var(--sombra);
+}
+
+.controles-biblia {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.control-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.control-select {
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  border: 2px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 0.6rem 0.9rem;
+  min-height: 48px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: auto;
+}
+
+.control-select:focus {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 2px;
+  border-color: var(--color-acento);
+}
+
+.btn-leer {
+  background-color: var(--color-acento);
+  color: #ffffff;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radio);
+  padding: 0.6rem 1.5rem;
+  min-height: 48px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.1s;
+  align-self: end;
+}
+
+.btn-leer:hover { background-color: var(--color-acento-hover); }
+.btn-leer:active { transform: scale(0.98); }
+.btn-leer:focus {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 3px;
+}
+
+/* --- ÁREA DE TEXTO --- */
+.area-texto {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 1.5rem;
+  min-height: 280px;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--color-texto);
+}
+
+.texto-inicio {
+  color: var(--color-texto-suave);
+  text-align: center;
+  padding: 2rem 0;
+  font-style: italic;
+}
+
+/* VERSÍCULOS */
+.versiculo {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.versiculo:last-child { border-bottom: none; }
+
+.num-versiculo {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-oro);
+  min-width: 26px;
+  padding-top: 0.3rem;
+  flex-shrink: 0;
+}
+
+.texto-versiculo { flex: 1; }
+
+/* ENCABEZADO DE CAPÍTULO */
+.titulo-capitulo {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-acento);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-acento-claro);
+}
+
+/* --- ESTADOS --- */
+.mensaje-estado {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.mensaje-estado.cargando {
+  background: var(--color-acento-claro);
+  color: var(--color-acento);
+  border: 1px solid var(--color-acento);
+}
+
+.mensaje-estado.error {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #e74c3c;
+}
+
+/* --- FOOTER --- */
+.site-footer {
+  background: var(--color-acento);
+  color: rgba(255,255,255,0.75);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  margin-top: auto;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 680px) {
+  .controles-biblia {
+    grid-template-columns: 1fr 1fr;
+  }
+  .btn-leer {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .site-title { font-size: 1.3rem; }
+}
+
+@media (max-width: 420px) {
+  .controles-biblia {
+    grid-template-columns: 1fr;
+  }
+  .header-inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* --- IMPRESIÓN (base, Fase 3 la amplía) --- */
+@media print {
+  .site-header .accesibilidad,
+  .lector-section,
+  .divisor,
+  .site-footer { display: none !important; }
+}
