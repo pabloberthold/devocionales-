@@ -657,10 +657,165 @@ body.alto-contraste .devocional-error {
 
 .modal-link:hover { text-decoration: underline; }
 
-/* --- IMPRESIÓN (base, Fase 3 la amplía) --- */
+/* ============================================
+   FOOTER — Fase 3
+   ============================================ */
+.site-footer {
+  background: var(--color-acento);
+  color: rgba(255,255,255,0.8);
+  padding: 1.1rem 1.5rem;
+  margin-top: auto;
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.footer-frase {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.footer-ayuda-btn {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: var(--radio);
+  font-size: 0.85rem;
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+  min-height: 40px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.footer-ayuda-btn:hover {
+  background: rgba(255,255,255,0.28);
+}
+
+.footer-ayuda-btn:focus {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   IMPRESIÓN — Fase 3
+   ============================================ */
+
+/* Clase utilitaria para ocultar en impresión */
 @media print {
+  .no-print,
   .site-header .accesibilidad,
-  .lector-section,
-  .divisor,
-  .site-footer { display: none !important; }
+  .site-footer,
+  .dev-acciones,
+  .modal-overlay {
+    display: none !important;
+  }
+
+  /* Reset general para papel */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 13pt;
+    line-height: 1.6;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  .site-main {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Header simplificado para impresión */
+  .site-header {
+    background: #fff !important;
+    color: #000 !important;
+    border-bottom: 2px solid #1a3a6b;
+    padding: 0.5rem 0 0.75rem !important;
+    box-shadow: none !important;
+  }
+
+  .logo-cross { color: #1a3a6b !important; }
+  .site-title { color: #1a3a6b !important; font-size: 18pt !important; }
+  .site-subtitle { color: #555 !important; }
+
+  /* Devocional para impresión */
+  .devocional-wrapper {
+    margin-bottom: 0 !important;
+  }
+
+  .devocional-card {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .dev-header {
+    background: #fff !important;
+    color: #000 !important;
+    border-bottom: 1.5px solid #1a3a6b;
+    padding: 0.5rem 0 0.6rem !important;
+  }
+
+  .dev-fecha { color: #555 !important; font-size: 10pt !important; }
+  .dev-titulo { color: #1a3a6b !important; font-size: 16pt !important; }
+
+  .dev-versiculo {
+    background: #f9f6f0 !important;
+    border-left: 4px solid #b08d4a !important;
+    padding: 0.75rem 1rem !important;
+    margin: 0.75rem 0 !important;
+    page-break-inside: avoid;
+  }
+
+  .dev-etiqueta {
+    color: #555 !important;
+    font-size: 9pt !important;
+  }
+
+  .dev-cita {
+    color: #000 !important;
+    font-size: 13pt !important;
+  }
+
+  .dev-seccion {
+    padding: 0.6rem 0 !important;
+    border-top: 0.5px solid #ccc !important;
+  }
+
+  .dev-oracion-box {
+    background: #f4f7fc !important;
+    padding: 0.6rem 0.75rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .dev-texto {
+    color: #000 !important;
+    font-size: 12pt !important;
+  }
+
+  /* Pie de impresión */
+  .devocional-wrapper::after {
+    content: "Mi Biblia Diaria · mibibliadiaria.github.io · Impreso el " attr(data-fecha-impresion);
+    display: block;
+    margin-top: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 0.5px solid #ccc;
+    font-size: 9pt;
+    color: #888;
+    text-align: center;
+  }
 }

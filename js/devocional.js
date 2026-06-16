@@ -285,6 +285,11 @@ function cambiarApiKey() {
 
 // ---- IMPRIMIR ----
 function imprimirDevocional() {
+  // Poner la fecha legible en el wrapper para que el pie de impresión la muestre
+  const wrapper = document.querySelector('.devocional-wrapper');
+  if (wrapper) {
+    wrapper.setAttribute('data-fecha-impresion', fechaLegible());
+  }
   window.print();
 }
 
