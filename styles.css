@@ -351,6 +351,312 @@ body {
   .header-inner { flex-direction: column; align-items: flex-start; }
 }
 
+/* ============================================
+   DEVOCIONAL — Estilos (Fase 2)
+   ============================================ */
+
+/* --- CARD DEVOCIONAL --- */
+.devocional-card {
+  background: var(--color-fondo-card);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+.dev-header {
+  background: var(--color-acento);
+  color: #fff;
+  padding: 1.1rem 1.5rem;
+}
+
+.dev-fecha {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  display: block;
+  margin-bottom: 2px;
+  text-transform: capitalize;
+}
+
+.dev-titulo {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+/* --- VERSÍCULO --- */
+.dev-versiculo {
+  background: var(--color-oro-claro);
+  border-left: 5px solid var(--color-oro);
+  padding: 1.25rem 1.5rem;
+}
+
+.dev-etiqueta {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-texto-suave);
+  margin-bottom: 0.6rem;
+}
+
+.dev-cita {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--color-texto);
+  margin: 0;
+}
+
+/* --- SECCIONES --- */
+.dev-seccion {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.dev-oracion-box {
+  background: var(--color-acento-claro);
+}
+
+.dev-texto {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-texto);
+  margin: 0;
+}
+
+.dev-oracion-texto {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+}
+
+/* --- ACCIONES --- */
+.dev-acciones {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.1rem 1.5rem;
+  border-top: 1px solid var(--color-borde);
+  flex-wrap: wrap;
+}
+
+.btn-imprimir {
+  background: var(--color-acento);
+  color: #fff;
+  border: none;
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  min-height: 48px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-imprimir:hover { background: var(--color-acento-hover); }
+
+.btn-nuevo {
+  background: transparent;
+  color: var(--color-acento);
+  border: 2px solid var(--color-acento);
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  min-height: 48px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-nuevo:hover {
+  background: var(--color-acento);
+  color: #fff;
+}
+
+/* --- ESTADO CARGANDO --- */
+.devocional-cargando {
+  background: var(--color-fondo-card);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.cargando-inner { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+
+.cargando-cruz {
+  font-size: 2.8rem;
+  color: var(--color-acento);
+  animation: latido 1.5s ease-in-out infinite;
+}
+
+@keyframes latido {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.9); }
+}
+
+.cargando-texto {
+  font-size: 1rem;
+  color: var(--color-texto-suave);
+}
+
+.cargando-puntos {
+  display: flex;
+  gap: 6px;
+}
+
+.cargando-puntos span {
+  width: 10px; height: 10px;
+  background: var(--color-acento);
+  border-radius: 50%;
+  animation: pulso 1.2s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+.cargando-puntos span:nth-child(2) { animation-delay: 0.2s; }
+.cargando-puntos span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes pulso {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* --- ESTADO ERROR --- */
+.devocional-error {
+  background: #fdf3f2;
+  border: 1px solid #e8b4b0;
+  border-radius: var(--radio);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+body.alto-contraste .devocional-error {
+  background: #2a0000;
+  border-color: #cc3300;
+}
+
+.error-inner { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.error-icono { font-size: 2.2rem; }
+.error-texto { font-size: 0.95rem; color: var(--color-texto); max-width: 420px; line-height: 1.7; }
+.error-botones { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+
+/* ============================================
+   MODAL API KEY
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-caja {
+  background: var(--color-fondo-card);
+  border-radius: 14px;
+  padding: 2rem 2rem 1.75rem;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.modal-icono { font-size: 2.2rem; text-align: center; }
+
+.modal-titulo {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-acento);
+  text-align: center;
+  margin: 0;
+}
+
+.modal-texto {
+  font-size: 0.95rem;
+  color: var(--color-texto);
+  line-height: 1.7;
+  text-align: center;
+}
+
+.modal-pasos {
+  background: var(--color-acento-claro);
+  border-radius: var(--radio);
+  padding: 0.9rem 1rem 0.9rem 2rem;
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  line-height: 2;
+}
+
+.modal-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+.modal-input {
+  width: 100%;
+  font-size: 1rem;
+  font-family: 'Open Sans', Arial, sans-serif;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  border: 2px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 0.7rem 1rem;
+  min-height: 48px;
+  transition: border-color 0.2s;
+}
+
+.modal-input:focus {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 2px;
+  border-color: var(--color-acento);
+}
+
+.modal-nota {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.btn-modal-principal {
+  background: var(--color-acento);
+  color: #fff;
+  border: none;
+  border-radius: var(--radio);
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  min-height: 52px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.btn-modal-principal:hover { background: var(--color-acento-hover); }
+
+.modal-link {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-acento);
+  text-decoration: none;
+  padding: 0.25rem 0;
+}
+
+.modal-link:hover { text-decoration: underline; }
+
 /* --- IMPRESIÓN (base, Fase 3 la amplía) --- */
 @media print {
   .site-header .accesibilidad,
