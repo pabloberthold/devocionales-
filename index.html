@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Biblia Diaria</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="logo-cross">✝</span>
+        <div>
+          <h1 class="site-title">Mi Biblia Diaria</h1>
+          <p class="site-subtitle">Palabra de Dios para cada día</p>
+        </div>
+      </div>
+      <div class="accesibilidad">
+        <button class="btn-acc" id="btnMayor" title="Aumentar letra" aria-label="Aumentar tamaño de letra">A+</button>
+        <button class="btn-acc" id="btnMenor" title="Reducir letra" aria-label="Reducir tamaño de letra">A−</button>
+        <button class="btn-acc" id="btnContraste" title="Alto contraste" aria-label="Activar alto contraste">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main">
+
+    <!-- DEVOCIONAL (Fase 2 lo llenará) -->
+    <section class="devocional-wrapper" aria-label="Devocional del día">
+      <div id="devocional" class="devocional-placeholder">
+        <span class="placeholder-icono">✝</span>
+        <p class="placeholder-texto">El devocional del día aparecerá aquí.<br>Próximamente disponible.</p>
+      </div>
+    </section>
+
+    <!-- DIVISOR -->
+    <div class="divisor">
+      <span>📖 Leer la Biblia</span>
+    </div>
+
+    <!-- LECTOR BÍBLICO -->
+    <section class="lector-section" aria-label="Lector de la Biblia">
+
+      <div class="controles-biblia">
+
+        <div class="control-grupo">
+          <label class="control-label" for="selVersion">Versión</label>
+          <select id="selVersion" class="control-select">
+            <option value="rvr1960">Reina Valera 1960</option>
+            <option value="nvi">Nueva Versión Internacional (NVI)</option>
+          </select>
+        </div>
+
+        <div class="control-grupo">
+          <label class="control-label" for="selLibro">Libro</label>
+          <select id="selLibro" class="control-select"></select>
+        </div>
+
+        <div class="control-grupo">
+          <label class="control-label" for="selCapitulo">Capítulo</label>
+          <select id="selCapitulo" class="control-select"></select>
+        </div>
+
+        <button id="btnLeer" class="btn-leer">Leer capítulo</button>
+
+      </div>
+
+      <!-- ÁREA DE TEXTO -->
+      <div id="areaTexto" class="area-texto">
+        <p class="texto-inicio">Seleccione un libro y capítulo para comenzar a leer.</p>
+      </div>
+
+      <!-- ESTADO DE CARGA / ERROR -->
+      <div id="mensajeEstado" class="mensaje-estado" aria-live="polite" hidden></div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>Sitio creado con amor para la familia · <span id="anio"></span></p>
+  </footer>
+
+  <script src="js/biblia.js"></script>
+  <script>
+    document.getElementById('anio').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
