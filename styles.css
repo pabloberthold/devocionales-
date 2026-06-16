@@ -559,6 +559,10 @@ body.alto-contraste .devocional-error {
   padding: 1rem;
 }
 
+.modal-oculto {
+  display: none !important;
+}
+
 .modal-caja {
   background: var(--color-fondo-card);
   border-radius: 14px;
