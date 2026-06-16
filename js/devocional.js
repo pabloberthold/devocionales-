@@ -26,6 +26,7 @@ function mostrarModalApiKey() {
   overlay.className = 'modal-overlay';
   overlay.innerHTML = `
     <div class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+      <button id="btnCerrarKey" class="modal-cerrar" aria-label="Cerrar">✕</button>
       <div class="modal-icono">🔑</div>
       <h2 class="modal-titulo" id="modalTitulo">Configurar clave de Google AI</h2>
       <p class="modal-texto">
@@ -55,8 +56,22 @@ function mostrarModalApiKey() {
   `;
   document.body.appendChild(overlay);
 
-  const input = document.getElementById('inputApiKey');
+  const input      = document.getElementById('inputApiKey');
   const btnGuardar = document.getElementById('btnGuardarKey');
+  const btnCerrar  = document.getElementById('btnCerrarKey');
+
+  // Cerrar con la X
+  btnCerrar.addEventListener('click', () => overlay.remove());
+
+  // Cerrar haciendo clic fuera del cuadro
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', function cerrarEsc(e) {
+    if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', cerrarEsc); }
+  });
 
   input.focus();
 
