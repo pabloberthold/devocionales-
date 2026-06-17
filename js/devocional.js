@@ -95,17 +95,30 @@ function mostrarModalApiKey() {
 // ---- PROMPT PARA GEMINI ----
 function construirPrompt() {
   const fecha = fechaLegible();
-  return `Eres un pastor cristiano amable. Escribe un devocional cristiano para una persona adulta mayor, para el día ${fecha}.
+  return `Eres un pastor cristiano evangélico con el corazón y la sabiduría de predicadores como Jimmy Swaggart, Dante Gebel y Marcos Witt. Escribe un devocional cristiano evangélico para una persona adulta mayor, para el día ${fecha}.
 
-REGLAS:
-- Palabras muy sencillas, fáciles de entender.
-- Oraciones cortas, máximo 12 palabras cada una.
-- Tono cálido, como una carta de un amigo.
-- Sin términos teológicos difíciles.
+REGLAS DE ESCRITURA:
+- Escribe con amor profundo, como si le hablaras a tu propia madre o abuela.
+- Usa palabras sencillas y cotidianas. Nada complicado ni académico.
+- Oraciones claras, no demasiado largas.
+- Tono cálido, esperanzador y lleno de fe.
+- Mensaje puramente cristiano evangélico: gracia, amor de Dios, salvación, esperanza, fidelidad de Dios.
+- La reflexión debe ser extensa y profunda: mínimo 10 oraciones. Debe llenar media página impresa.
+- Podés incluir una ilustración o ejemplo de la vida diaria que conecte con la experiencia de una persona mayor.
+- Recordale al lector que Dios lo ama profundamente sin importar su edad ni sus errores pasados.
 
-Responde ÚNICAMENTE con un objeto JSON válido, sin texto antes ni después, sin bloques de código, sin comillas especiales. Exactamente este formato:
+Responde ÚNICAMENTE con un objeto JSON válido, sin texto antes ni después, sin bloques de código. Exactamente este formato:
 
-{"versiculo":"[UN versículo completo de la Biblia Reina Valera 1960 con su referencia]","reflexion":"[5 oraciones simples sobre el versículo, separadas por espacios]","oracion":"[4 oraciones de oración en primera persona, separadas por espacios]"}`;
+{
+  "versiculo": "Texto completo del versículo (Libro Capítulo:Versículo - RVR1960)",
+  "reflexion": "Párrafo extenso de reflexión aquí. Mínimo 10 oraciones. Con amor, profundidad y mensaje evangélico claro.",
+  "oracion": "Oración 1. Oración 2. Oración 3. Oración 4. Oración 5. Amén."
+}
+
+versiculo: un versículo poderoso de la Reina Valera 1960, con su referencia completa.
+reflexion: mínimo 10 oraciones llenas de amor, esperanza y verdad evangélica. Incluí una ilustración de la vida cotidiana. Hablale directamente al lector con "usted" o "tú".
+oracion: 5 oraciones en primera persona hablando con Dios, desde el corazón de una persona mayor.
+Solo JSON. Nada más.`;
 }
 
 // ---- LLAMAR A GEMINI ----
@@ -172,13 +185,33 @@ function parsearDevocional(texto) {
   return secciones;
 }
 
+// Convierte texto en párrafos HTML, dividiendo por punto final o salto de línea
+function aParrafos(texto) {
+  if (!texto) return '';
+  // Si tiene saltos de línea, usarlos como separadores de párrafo
+  if (texto.includes('\n')) {
+    return texto.split(/\n+/)
+      .map(p => p.trim())
+      .filter(p => p.length > 0)
+      .map(p => `<p class="dev-parrafo">${p}</p>`)
+      .join('');
+  }
+  // Si es un bloque continuo, dividir cada 2-3 oraciones en párrafos
+  const oraciones = texto.match(/[^.!?]+[.!?]+/g) || [texto];
+  const parrafos = [];
+  for (let i = 0; i < oraciones.length; i += 3) {
+    const grupo = oraciones.slice(i, i + 3).join(' ').trim();
+    if (grupo) parrafos.push(`<p class="dev-parrafo">${grupo}</p>`);
+  }
+  return parrafos.join('') || `<p class="dev-parrafo">${texto}</p>`;
+}
+
 // ---- RENDERIZAR DEVOCIONAL ----
 function renderizarDevocional(texto) {
   const contenedor = document.getElementById('devocional');
   const secciones = parsearDevocional(texto);
   const fecha = fechaLegible();
 
-  // Capitalizar primera letra de la fecha
   const fechaDisplay = fecha.charAt(0).toUpperCase() + fecha.slice(1);
 
   contenedor.className = 'devocional-card';
@@ -195,12 +228,12 @@ function renderizarDevocional(texto) {
 
     <div class="dev-seccion">
       <span class="dev-etiqueta">📖 Reflexión</span>
-      <p class="dev-texto">${(secciones.reflexion || '').replace(/\n/g, '<br>')}</p>
+      <div class="dev-reflexion-body">${aParrafos(secciones.reflexion)}</div>
     </div>
 
     <div class="dev-seccion dev-oracion-box">
       <span class="dev-etiqueta">🙏 Oración</span>
-      <p class="dev-texto dev-oracion-texto">${(secciones.oracion || '').replace(/\n/g, '<br>')}</p>
+      <div class="dev-oracion-body">${aParrafos(secciones.oracion)}</div>
     </div>
 
     <div class="dev-acciones">
