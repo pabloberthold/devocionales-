@@ -116,7 +116,7 @@ async function llamarGemini(apiKey) {
     contents: [{ parts: [{ text: construirPrompt() }] }],
     generationConfig: {
       temperature: 0.8,
-      maxOutputTokens: 700,
+      maxOutputTokens: 2048,
       responseMimeType: 'application/json',
     }
   };
