@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    /* Reglas CSS Inyectadas para asegurar consistencia del layout del Lektor */
+    /* Estilos de la sección del Lector en Pantalla */
     .lector-section {
         background: #ffffff;
         border: 1px solid #e2e8f0;
@@ -61,40 +61,93 @@
         transition: background-color 0.2s;
         height: 38px;
     }
-    .btn-leer:hover {
-        background-color: #2c5282;
-    }
+    .btn-leer:hover { background-color: #2c5282; }
+
+    /* Botón de Impresión Estilizado */
     .btn-print {
-        background: none;
-        border: 1px solid #cbd5e0;
-        padding: 0.4rem 0.8rem;
-        border-radius: 4px;
+        background-color: #27ae60;
+        color: #ffffff;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
         cursor: pointer;
         font-family: 'Open Sans', sans-serif;
-        font-size: 0.85rem;
-        color: #4a5568;
+        font-size: 0.9rem;
+        font-weight: 600;
         display: flex;
         align-items: center;
-        gap: 0.4rem;
-        transition: background 0.2s;
+        gap: 0.5rem;
+        box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+        transition: background-color 0.2s, transform 0.1s;
     }
     .btn-print:hover {
-        background-color: #f7fafc;
+        background-color: #219653;
+        transform: translateY(-1px);
+    }
+    .btn-print:active {
+        transform: translateY(0);
     }
     
-    /* Estilos específicos de impresión para evitar desperdicio de tinta */
+    /* CONTROL AGRESIVO DE CONFIGURACIÓN PARA UNA SOLA HOJA A4 (IMPRESIÓN) */
     @media print {
+        @page {
+            size: A4;
+            margin: 10mm 12mm 10mm 12mm; /* Reducción de márgenes físicos de página */
+        }
         .no-print, .site-header, .site-footer, .divisor, .controles-biblia, .accesibilidad, .btn-print {
             display: none !important;
         }
         body {
             background: white !important;
-            color: black !important;
+            color: #000000 !important;
+            font-size: 10pt !important; /* Tipografía base compacta */
+            line-height: 1.4 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         .devocional-wrapper {
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
+            margin: 0 !important;
+        }
+        .devocional-header {
+            margin-bottom: 0.8rem !important;
+            padding-bottom: 0.5rem !important;
+            border-bottom: 1px solid #ddd !important;
+        }
+        .versiculo-titulo {
+            font-size: 14pt !important;
+            margin-bottom: 0.2rem !important;
+        }
+        .versiculo-texto {
+            font-size: 10.5pt !important;
+            line-height: 1.3 !important;
+        }
+        .devocional-body {
+            margin-bottom: 1rem !important;
+        }
+        .devocional-body h3, .devocional-footer h3 {
+            font-size: 11pt !important;
+            margin-top: 0.4rem !important;
+            margin-bottom: 0.3rem !important;
+        }
+        .texto-reflexion p {
+            font-size: 10pt !important;
+            line-height: 1.4 !important;
+            margin-bottom: 0.6rem !important;
+        }
+        .devocional-footer {
+            background-color: #fafafa !important;
+            border-left: 3px solid #3498db !important;
+            padding: 0.8rem !important;
+            border-radius: 4px !important;
+            page-break-inside: avoid; /* Evita que la oración se rompa a la mitad */
+        }
+        .texto-oracion p {
+            font-size: 10pt !important;
+            line-height: 1.4 !important;
+            margin-bottom: 0.4rem !important;
         }
     }
   </style>
@@ -124,30 +177,30 @@
       <div id="devocional" class="devocional-contenido">
         
         <div class="devocional-header" style="margin-bottom: 1.5rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
-            <div>
+            <div style="flex: 1; min-width: 280px;">
                 <h2 class="versiculo-titulo" style="font-family: 'Lora', Georgia, serif; color: #2c3e50; font-size: 1.8rem; margin: 0 0 0.5rem 0;">
-                    1 Reyes 1:37
+                    Apocalipsis 18:24
                 </h2>
                 <p class="versiculo-texto" style="font-family: 'Lora', Georgia, serif; font-style: italic; color: #7f8c8d; font-size: 1.2rem; line-height: 1.6; margin: 0;">
-                    "Que así como el Señor estuvo con mi señor, el rey, esté también con Salomón; ¡y que engrandezca su trono aún más que el trono de mi señor el rey David!"
+                    "porque en ti se halló sangre de profetas y de santos, y de todos los que han sido asesinados en la tierra»."
                 </p>
             </div>
-            <button class="btn-print no-print" onclick="window.print();" title="Imprimir devocional">
-                🖨️ Imprimir
+            <button class="btn-print no-print" onclick="window.print();">
+                🖨️ Imprimir Devocional
             </button>
         </div>
         
         <div class="devocional-body" style="margin-bottom: 2rem;">
             <h3 style="font-family: 'Open Sans', sans-serif; color: #34495e; font-size: 1.3rem; margin-top: 0;">Reflexión Pastoral</h3>
-            <div class="texto-reflexion" style="font-family: 'Open Sans', sans-serif; font-size: 1.05rem; line-height: 1.8; color: #2c3e50;">
-                <p style="margin-bottom: 1rem;">Querido amigo, ¡Mire esto!  El Señor nos está hablando hoy, y su voz es un llamado a acción, una promesa de bendición y una advertencia de responsabilidad.  Hablando del rey Salomón, ¿te imaginas el poder que emanaba de él? Una mente brillante, un corazón dedicado al servicio de Dios, un legado que se extendía por todo el reino. ¡El Señor está hablando con nosotros hoy, recordándonos que la grandeza no reside en una posición o en una herencia, sino en la dedicación a servirle!</p><p style="margin-bottom: 1rem;">¿Y cómo podemos responder a esta llamada? ¿Cómo podemos honrar el legado de aquellos que nos han guiado y nos han enseñado?  En un mundo donde se busca el éxito individualista, donde las generaciones se pierden en la vorágine de la vida moderna, ¡El Señor te dice hoy que no debemos olvidar a nuestros mayores! No se trata solo de una cuestión de "reconocimiento", sino de una responsabilidad que nos compromete a cuidar, a acompañar y a inspirar.</p><p style="margin-bottom: 1rem;">¿Cómo podemos hacerlo? ¡A través del ejemplo! ¡Al igual que Salomón recibió el favor del Señor, nosotros también podemos servir al Señor con la misma pasión y dedicación!  El valor de sus vidas se refleja en los niños que aprenden de ellos, en las familias que se fortalecen con su sabiduría, en las comunidades que prosperan con su experiencia. El Señor te dice hoy que no hay mejor legado que el de cuidar y acompañar a los adultos mayores, que construir una red de apoyo para que puedan seguir sirviendo a Dios y a la comunidad. ¡Aleluya!</p>
+            <div class="texto-reflexion" id="textoReflexion" style="font-family: 'Open Sans', sans-serif; font-size: 1.05rem; line-height: 1.8; color: #2c3e50;">
+                <p style="margin-bottom: 0.8rem;">¡Oh, hermanos! ¡Aleluya!  ¿Quién puede comprender la magnitud del sacrificio de aquellos que han transitado por este mundo? ¿Quién puede medir la fuerza y la profundidad de las huellas dejadas en el camino? ¡El Señor nos ha enseñado que la sangre de los profetas, de los santos y de todos aquellos que han sido asesinados en la tierra, es una verdad inmensa!  ¡Es un legado que nos conmueve y nos llena de responsabilidad!</p><p style="margin-bottom: 0.8rem;">Imaginemos a nuestros padres, a nuestros abuelos, a aquellos que han guiado nuestras vidas. ¡Que sus ojos brillan con la sabiduría de los años, que su voz resuene con la experiencia de la vida! ¿Quiénes son esos hombres y mujeres que han sido testigos del paso del tiempo? ¿Quiénes son los que han visto crecer las generaciones y han compartido con nosotros las historias de la vida?  ¡Son como un tesoro, un legado invaluable! ¡Un tesoro que debemos cuidar y proteger!</p><p style="margin-bottom: 0.8rem;">El Señor nos dice hoy que somos llamados a honrarlos, a valorar su sabiduría y a acompañarlos en este viaje. ¡No se trata solo de brindarles un techo o una comida! No es de menospreciar sus vidas ni de negarles el respeto que merecen.  Es de valorar su experiencia, de aprender de ellos, de escuchar sus historias y de compartir con ellos la fe que nos ha llenado de esperanza. Porque en ellos encontramos la conexión con las generaciones pasadas, con aquellos que han sido testigos del cambio y de la transformación divina. ¡Querido amigo, el Señor te dice hoy: no olvidemos a los adultos mayores!  ¡No se les olvide!  **¡Homeneamos su legado y sus vidas!**</p>
             </div>
         </div>
         
         <div class="devocional-footer" style="background-color: #fcfcfc; border-left: 4px solid #3498db; padding: 1.5rem; border-radius: 4px;">
             <h3 style="font-family: 'Open Sans', sans-serif; color: #2980b9; font-size: 1.3rem; margin-top: 0;">Oración de Fe</h3>
-            <div class="texto-oracion" style="font-family: 'Lora', Georgia, serif; font-size: 1.1rem; line-height: 1.8; color: #2c3e50; font-style: italic;">
-                <p style="margin-bottom: 1rem;">Padre celestial, Señor Jesús, te suplico que me concedas tu bendición y tu presencia en este instante.  Te rogo que me abras tus ojos para ver tu rostro en el rostro de cada miembro de esta congregación.  Que mi corazón se convierta en un hogar de paz y amor donde pueda escuchar tu voz y responder a tu llamado.</p><p style="margin-bottom: 1rem;">¡Oh, Señor! Hoy te pedimos sabiduría y discernimiento, para que podamos servir a tu pueblo con la entrega y la pasión que mereces.  Como el rey Salomón, que con su mente brillante y corazón dedicado al servicio de Dios construyó un legado que se extendía por todo el reino, queremos ser instrumentos de tu gracia en este mundo.</p><p style="margin-bottom: 1rem;">**Declaramos tu gracia**, Señor Jesús, en cada rostro, cada corazón y cada alma que se encuentra aquí.  Que la fuerza de tu amor nos ilumine para discernir entre lo que es necesario y lo que no es, y que podamos actuar con valentía y sabiduría al servicio de los adultos mayores de esta iglesia.</p><p style="margin-bottom: 1rem;">**Ministramos a tu pueblo**, Señor Jesús, con el corazón lleno de humildad y la mente abierta a tu guía.  Que nuestra misión sea la de servir, cuidar, escuchar y apoyar a aquellos que necesitan tu compañía.  No debemos asumir que somos los responsables de sus necesidades, sino que queremos ser instrumentos de tu gracia para que ellos puedan sentir tu amor en cada momento.</p><p style="margin-bottom: 1rem;">En este instante de oración ferviente, te suplicamos que nos concedas la sabiduría para servir con la entrega y la pasión que mereces.  Que nuestra misión sea la de reflejar tu amor en cada acción, cada palabra y cada gesto.  Amén.</p>
+            <div class="texto-oracion" id="textoOracion" style="font-family: 'Lora', Georgia, serif; font-size: 1.1rem; line-height: 1.8; color: #2c3e50; font-style: italic;">
+                <p style="margin-bottom: 0.8rem;">Oh, Padre Celestial!  Tu misericordia me llena de asombro. ¡Cómo puedo comprender la magnitud de las vidas que han transitado por este mundo, las historias que se han escrito en la historia de la humanidad!  La sangre de los profetas, de los santos y de aquellos que han sido víctimas del odio y la crueldad, es una verdad inmensa que nos conmueve. ¡Oh, Señor Jesús, tu sacrificio es un regalo inestimable que nos da vida eterna!</p><p style="margin-bottom: 0.8rem;">Declaramos tu gracia, Padre, en cada corazón que se inclina ante ti.  Tu sabiduría nos guía y tu amor nos consuela. ¡Oh, Señor!  En este momento de oración, quiero sentir la fuerza de tu presencia y la profundidad de tu amor.  Quiero ser instrumento de tu luz para aquellos que necesitan de ella.</p><p style="margin-bottom: 0.8rem;">Ministramos a tu pueblo, Padre, con humildad y entrega.  Quiero servir a los adultos mayores de nuestra iglesia, sin asumir que yo pertenezco a ese rango etario, con sabiduría y discernimiento.  Que mi corazón sea un reflejo de tu amor, y que mis palabras sean fruto del Espíritu Santo.</p><p style="margin-bottom: 0.8rem;">En el nombre del Padre, del Hijo y del Espíritu Santo, Amén.</p>
             </div>
         </div>
 
