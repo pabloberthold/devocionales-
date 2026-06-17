@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Biblia Diaria</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="logo-cross">✝</span>
+        <div>
+          <h1 class="site-title">Mi Biblia Diaria</h1>
+          <p class="site-subtitle">Palabra de Dios para cada día</p>
+        </div>
+      </div>
+      <div class="accesibilidad">
+        <button class="btn-acc" id="btnMayor" title="Aumentar letra" aria-label="Aumentar tamaño de letra">A+</button>
+        <button class="btn-acc" id="btnMenor" title="Reducir letra" aria-label="Reducir tamaño de letra">A−</button>
+        <button class="btn-acc" id="btnContraste" title="Alto contraste" aria-label="Activar alto contraste">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main">
+
+    <!-- DEVOCIONAL -->
+    <section class="devocional-wrapper" aria-label="Devocional del día">
+      <div id="devocional">
+        <!-- El contenido dinámico asíncrono se inyectará en este contenedor -->
+        <div class="loading-status" style="text-align: center; padding: 2rem;">
+          <span class="placeholder-icono">⏳</span>
+          <p class="placeholder-texto">Invocando inferencia local y generando devocional...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIVISOR -->
+    <div class="divisor no-print">
+      <span>📖 Leer la Biblia</span>
+    </div>
+
+    <!-- LECTOR BÍBLICO -->
+    <section class="lector-section no-print" aria-label="Lector de la Biblia">
+
+      <div class="controles-biblia">
+        <div class="control-grupo">
+          <label class="control-label" for="selVersion">Versión</label>
+          <select id="selVersion" class="control-select">
+            <option value="rvr1960">Reina Valera 1960</option>
+            <option value="nvi">Nueva Versión Internacional (NVI)</option>
+          </select>
+        </div>
+        <div class="control-grupo">
+          <label class="control-label" for="selLibro">Libro</label>
+          <select id="selLibro" class="control-select"></select>
+        </div>
+        <div class="control-grupo">
+          <label class="control-label" for="selCapitulo">Capítulo</label>
+          <select id="selCapitulo" class="control-select"></select>
+        </div>
+        <button id="btnLeer" class="btn-leer">Leer capítulo</button>
+      </div>
+
+      <div id="areaTexto" class="area-texto">
+        <p class="texto-inicio">Seleccione un libro y capítulo para comenzar a leer.</p>
+      </div>
+
+      <div id="mensajeEstado" class="mensaje-estado" aria-live="polite" hidden></div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" id="siteFooter">
+    <div class="footer-inner">
+      <p class="footer-frase">Sitio creado con amor para la familia · <span id="anio"></span></p>
+      <button class="footer-ayuda-btn" id="btnAyudaApi" aria-label="Ayuda para configurar la clave API">
+        ¿Cómo configuro mi clave API?
+      </button>
+    </div>
+  </footer>
+
+  <!-- MODAL AYUDA API -->
+  <div id="modalAyuda" class="modal-overlay modal-oculto" role="dialog" aria-modal="true" aria-labelledby="ayudaTitulo">
+    <div class="modal-caja">
+      <button class="modal-cerrar" id="btnCerrarAyuda" aria-label="Cerrar">✕</button>
+      <div class="modal-icono">📋</div>
+      <h2 class="modal-titulo" id="ayudaTitulo">Cómo obtener la clave de Google AI</h2>
+      <p class="modal-texto">Es gratis y lleva solo 3 minutos. Seguí estos pasos:</p>
+      <ol class="modal-pasos">
+        <li>Abrí el navegador y entrá a <strong>aistudio.google.com</strong></li>
+        <li>Iniciá sesión con tu cuenta de Google (la misma del Gmail)</li>
+        <li>Hacé clic en el botón <strong>"Get API Key"</strong> que está arriba a la izquierda</li>
+        <li>Hacé clic en <strong>"Create API key"</strong></li>
+        <li>Copiá la clave que aparece (empieza con "AIza...")</li>
+        <li>Volvé aquí y pegala cuando el sitio te la pida</li>
+      </ol>
+      <p class="modal-nota">✓ Es completamente gratuita · ✓ No se comparte con nadie · ✓ Se guarda solo en este dispositivo</p>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="btn-modal-principal" style="text-align:center; text-decoration:none; display:block; flex:1;">
+          Ir a Google AI Studio →
+        </a>
+        <button class="btn-nuevo" id="btnCerrarAyuda2" style="flex:1;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/biblia.js"></script>
+  <script src="js/devocionales.js"></script>
+  <script>
+    document.getElementById('anio').textContent = new Date().getFullYear();
+
+    const modalAyuda = document.getElementById('modalAyuda');
+    const btnAyudaApi = document.getElementById('btnAyudaApi');
+
+    function abrirAyuda() { modalAyuda.classList.remove('modal-oculto'); }
+    function cerrarAyuda() { modalAyuda.classList.add('modal-oculto'); }
+
+    btnAyudaApi.addEventListener('click', abrirAyuda);
+    document.getElementById('btnCerrarAyuda').addEventListener('click', cerrarAyuda);
+    document.getElementById('btnCerrarAyuda2').addEventListener('click', cerrarAyuda);
+    modalAyuda.addEventListener('click', e => { if (e.target === modalAyuda) cerrarAyuda(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarAyuda(); });
+  </script>
+</body>
+</html>
