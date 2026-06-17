@@ -3,21 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Biblia Diaria</title>
+  <title>Devocional del día</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reglas CSS Inyectadas para asegurar consistencia del layout del Lektor */
+    .lector-section {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .controles-biblia {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-end;
+        border-bottom: 1px solid #edf2f7;
+        padding-bottom: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+    .control-grupo {
+        flex: 1;
+        min-width: 150px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+    .control-label {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #4a5568;
+    }
+    .control-select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        background-color: #fff;
+        font-family: 'Open Sans', sans-serif;
+        color: #2d3748;
+    }
+    .btn-leer {
+        padding: 0.55rem 1.5rem;
+        background-color: #2b6cb0;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        height: 38px;
+    }
+    .btn-leer:hover {
+        background-color: #2c5282;
+    }
+    .btn-print {
+        background: none;
+        border: 1px solid #cbd5e0;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.85rem;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: background 0.2s;
+    }
+    .btn-print:hover {
+        background-color: #f7fafc;
+    }
+    
+    /* Estilos específicos de impresión para evitar desperdicio de tinta */
+    @media print {
+        .no-print, .site-header, .site-footer, .divisor, .controles-biblia, .accesibilidad, .btn-print {
+            display: none !important;
+        }
+        body {
+            background: white !important;
+            color: black !important;
+        }
+        .devocional-wrapper {
+            box-shadow: none !important;
+            border: none !important;
+            padding: 0 !important;
+        }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header" id="siteHeader">
     <div class="header-inner">
       <div class="logo-area">
         <span class="logo-cross">✝</span>
         <div>
-          <h1 class="site-title">Mi Biblia Diaria</h1>
+          <h1 class="site-title">Devocional del día</h1>
           <p class="site-subtitle">Palabra de Dios para cada día</p>
         </div>
       </div>
@@ -31,42 +120,44 @@
 
   <main class="site-main">
 
-    <!-- DEVOCIONAL DINÁMICO INYECTADO POR PYTHON -->
     <section class="devocional-wrapper" aria-label="Devocional del día">
       <div id="devocional" class="devocional-contenido">
         
-        <div class="devocional-header" style="margin-bottom: 1.5rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 1rem;">
-            <h2 class="versiculo-titulo" style="font-family: 'Lora', Georgia, serif; color: #2c3e50; font-size: 1.8rem; margin: 0 0 0.5rem 0;">
-                Hechos 10:34
-            </h2>
-            <p class="versiculo-texto" style="font-family: 'Lora', Georgia, serif; font-style: italic; color: #7f8c8d; font-size: 1.2rem; line-height: 1.6; margin: 0;">
-                "Entonces Pedro, abriendo la boca, dijo: En verdad comprendo que Dios no hace acepción de personas;"
-            </p>
+        <div class="devocional-header" style="margin-bottom: 1.5rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h2 class="versiculo-titulo" style="font-family: 'Lora', Georgia, serif; color: #2c3e50; font-size: 1.8rem; margin: 0 0 0.5rem 0;">
+                    1 Reyes 1:37
+                </h2>
+                <p class="versiculo-texto" style="font-family: 'Lora', Georgia, serif; font-style: italic; color: #7f8c8d; font-size: 1.2rem; line-height: 1.6; margin: 0;">
+                    "Que así como el Señor estuvo con mi señor, el rey, esté también con Salomón; ¡y que engrandezca su trono aún más que el trono de mi señor el rey David!"
+                </p>
+            </div>
+            <button class="btn-print no-print" onclick="window.print();" title="Imprimir devocional">
+                🖨️ Imprimir
+            </button>
         </div>
         
         <div class="devocional-body" style="margin-bottom: 2rem;">
             <h3 style="font-family: 'Open Sans', sans-serif; color: #34495e; font-size: 1.3rem; margin-top: 0;">Reflexión Pastoral</h3>
             <div class="texto-reflexion" style="font-family: 'Open Sans', sans-serif; font-size: 1.05rem; line-height: 1.8; color: #2c3e50;">
-                <p>Dios no muestra favoritismos. Su gracia está disponible para todo aquel que le busca con corazón sincero, rompiendo barreras culturales y humanas.</p>
+                <p style="margin-bottom: 1rem;">Querido amigo, ¡Mire esto!  El Señor nos está hablando hoy, y su voz es un llamado a acción, una promesa de bendición y una advertencia de responsabilidad.  Hablando del rey Salomón, ¿te imaginas el poder que emanaba de él? Una mente brillante, un corazón dedicado al servicio de Dios, un legado que se extendía por todo el reino. ¡El Señor está hablando con nosotros hoy, recordándonos que la grandeza no reside en una posición o en una herencia, sino en la dedicación a servirle!</p><p style="margin-bottom: 1rem;">¿Y cómo podemos responder a esta llamada? ¿Cómo podemos honrar el legado de aquellos que nos han guiado y nos han enseñado?  En un mundo donde se busca el éxito individualista, donde las generaciones se pierden en la vorágine de la vida moderna, ¡El Señor te dice hoy que no debemos olvidar a nuestros mayores! No se trata solo de una cuestión de "reconocimiento", sino de una responsabilidad que nos compromete a cuidar, a acompañar y a inspirar.</p><p style="margin-bottom: 1rem;">¿Cómo podemos hacerlo? ¡A través del ejemplo! ¡Al igual que Salomón recibió el favor del Señor, nosotros también podemos servir al Señor con la misma pasión y dedicación!  El valor de sus vidas se refleja en los niños que aprenden de ellos, en las familias que se fortalecen con su sabiduría, en las comunidades que prosperan con su experiencia. El Señor te dice hoy que no hay mejor legado que el de cuidar y acompañar a los adultos mayores, que construir una red de apoyo para que puedan seguir sirviendo a Dios y a la comunidad. ¡Aleluya!</p>
             </div>
         </div>
         
         <div class="devocional-footer" style="background-color: #fcfcfc; border-left: 4px solid #3498db; padding: 1.5rem; border-radius: 4px;">
             <h3 style="font-family: 'Open Sans', sans-serif; color: #2980b9; font-size: 1.3rem; margin-top: 0;">Oración de Fe</h3>
             <div class="texto-oracion" style="font-family: 'Lora', Georgia, serif; font-size: 1.1rem; line-height: 1.8; color: #2c3e50; font-style: italic;">
-                <p>Señor, ayudame a mirar a los demás con tus ojos de amor y sin prejuicios. Amén.</p>
+                <p style="margin-bottom: 1rem;">Padre celestial, Señor Jesús, te suplico que me concedas tu bendición y tu presencia en este instante.  Te rogo que me abras tus ojos para ver tu rostro en el rostro de cada miembro de esta congregación.  Que mi corazón se convierta en un hogar de paz y amor donde pueda escuchar tu voz y responder a tu llamado.</p><p style="margin-bottom: 1rem;">¡Oh, Señor! Hoy te pedimos sabiduría y discernimiento, para que podamos servir a tu pueblo con la entrega y la pasión que mereces.  Como el rey Salomón, que con su mente brillante y corazón dedicado al servicio de Dios construyó un legado que se extendía por todo el reino, queremos ser instrumentos de tu gracia en este mundo.</p><p style="margin-bottom: 1rem;">**Declaramos tu gracia**, Señor Jesús, en cada rostro, cada corazón y cada alma que se encuentra aquí.  Que la fuerza de tu amor nos ilumine para discernir entre lo que es necesario y lo que no es, y que podamos actuar con valentía y sabiduría al servicio de los adultos mayores de esta iglesia.</p><p style="margin-bottom: 1rem;">**Ministramos a tu pueblo**, Señor Jesús, con el corazón lleno de humildad y la mente abierta a tu guía.  Que nuestra misión sea la de servir, cuidar, escuchar y apoyar a aquellos que necesitan tu compañía.  No debemos asumir que somos los responsables de sus necesidades, sino que queremos ser instrumentos de tu gracia para que ellos puedan sentir tu amor en cada momento.</p><p style="margin-bottom: 1rem;">En este instante de oración ferviente, te suplicamos que nos concedas la sabiduría para servir con la entrega y la pasión que mereces.  Que nuestra misión sea la de reflejar tu amor en cada acción, cada palabra y cada gesto.  Amén.</p>
             </div>
         </div>
 
       </div>
     </section>
 
-    <!-- DIVISOR -->
     <div class="divisor no-print">
       <span>📖 Leer la Biblia</span>
     </div>
 
-    <!-- LECTOR BÍBLICO (PERSISTENTE) -->
     <section class="lector-section no-print" aria-label="Lector de la Biblia">
       <div class="controles-biblia">
         <div class="control-grupo">
@@ -91,7 +182,7 @@
       </div>
       
       <div id="areaTexto" class="area-texto">
-        <p class="texto-inicio">Seleccione un libro y capítulo para comenzar a leer.</p>
+        <p class="texto-inicio" style="margin: 0; padding: 0.5rem 0;">Seleccione un libro y capítulo para comenzar a leer.</p>
       </div>
     </section>
 
