@@ -95,28 +95,17 @@ function mostrarModalApiKey() {
 // ---- PROMPT PARA GEMINI ----
 function construirPrompt() {
   const fecha = fechaLegible();
-  return `Eres un pastor cristiano amable y sencillo. Escribe un devocional cristiano para una persona adulta mayor, para el día ${fecha}.
+  return `Eres un pastor cristiano amable. Escribe un devocional cristiano para una persona adulta mayor, para el día ${fecha}.
 
-REGLAS IMPORTANTES:
-- Usa palabras sencillas que todos entiendan. Nada complicado.
-- Cada oración debe ser corta: máximo 12 palabras.
-- Escribe como si le hablaras a un amigo querido.
-- Sin palabras difíciles ni términos de teología.
-- NO uses markdown. NO uses asteriscos, guiones, almohadillas ni ningún símbolo de formato.
-- Escribe solo texto plano.
+REGLAS:
+- Palabras muy sencillas, fáciles de entender.
+- Oraciones cortas, máximo 12 palabras cada una.
+- Tono cálido, como una carta de un amigo.
+- Sin términos teológicos difíciles.
 
-Usa EXACTAMENTE esta estructura, con los títulos en mayúsculas tal como están:
+Responde ÚNICAMENTE con un objeto JSON válido, sin texto antes ni después, sin bloques de código, sin comillas especiales. Exactamente este formato:
 
-VERSÍCULO DEL DÍA
-[Escribe UN versículo de la Biblia Reina Valera 1960. Incluí el libro, capítulo y versículo.]
-
-REFLEXIÓN
-[Escribe exactamente 5 oraciones simples. Explica el versículo con palabras del diario. Conecta con la vida de una persona mayor.]
-
-ORACIÓN
-[Escribe exactamente 4 oraciones en primera persona (yo). Que sea una oración para hablar con Dios. Sencilla y del corazón.]
-
-No escribas nada más. Solo las tres secciones con sus títulos en mayúsculas.`;
+{"versiculo":"[UN versículo completo de la Biblia Reina Valera 1960 con su referencia]","reflexion":"[5 oraciones simples sobre el versículo, separadas por espacios]","oracion":"[4 oraciones de oración en primera persona, separadas por espacios]"}`;
 }
 
 // ---- LLAMAR A GEMINI ----
@@ -127,7 +116,8 @@ async function llamarGemini(apiKey) {
     contents: [{ parts: [{ text: construirPrompt() }] }],
     generationConfig: {
       temperature: 0.8,
-      maxOutputTokens: 600,
+      maxOutputTokens: 700,
+      responseMimeType: 'application/json',
     }
   };
 
@@ -149,55 +139,34 @@ async function llamarGemini(apiKey) {
   return texto;
 }
 
-// ---- PARSEAR RESPUESTA ----
+// ---- PARSEAR RESPUESTA JSON ----
 function parsearDevocional(texto) {
   const secciones = { versiculo: '', reflexion: '', oracion: '' };
 
-  // Limpiar markdown que Gemini 2.5 suele agregar: **texto**, ## títulos, * listas
-  const limpiar = t => t
-    .replace(/\*\*(.*?)\*\*/g, '$1')   // negrita **texto**
-    .replace(/\*(.*?)\*/g, '$1')        // cursiva *texto*
-    .replace(/^#{1,4}\s+/gm, '')        // títulos ## ###
-    .replace(/^[\*\-]\s+/gm, '')        // listas con * o -
-    .trim();
+  // Log siempre para diagnóstico
+  console.log('=== TEXTO CRUDO DE GEMINI ===');
+  console.log(texto);
+  console.log('============================');
 
-  // Normalizar el texto: quitar asteriscos de títulos, unificar acentos
-  const textoNorm = limpiar(texto)
-    .replace(/VERSICULO/gi, 'VERSÍCULO')
-    .replace(/ORACION/gi, 'ORACIÓN')
-    .replace(/REFLEXION/gi, 'REFLEXIÓN');
+  try {
+    // Limpiar bloques de código que Gemini agrega a veces aunque se le pida JSON
+    const limpio = texto
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/i, '')
+      .replace(/```\s*$/i, '')
+      .trim();
 
-  // Buscar cada sección con regex flexible (acepta mayúsculas, minúsculas, con/sin tilde)
-  const reVersiculo = /VERS[IÍ]CULO DEL D[IÍ]A[\s\S]*?\n([\s\S]*?)(?=\nREFLEX|\nORAC|$)/i;
-  const reReflexion = /REFLEX[IÓO]N[\s\S]*?\n([\s\S]*?)(?=\nORAC|$)/i;
-  const reOracion   = /ORACI[OÓ]N[\s\S]*?\n([\s\S]*?)$/i;
+    const json = JSON.parse(limpio);
 
-  const mV = textoNorm.match(reVersiculo);
-  const mR = textoNorm.match(reReflexion);
-  const mO = textoNorm.match(reOracion);
+    // Aceptar variantes con o sin tilde
+    secciones.versiculo = (json.versiculo || json['versículo'] || json.versiculo_del_dia || json.versiculoDelDia || '').trim();
+    secciones.reflexion = (json.reflexion || json['reflexión'] || '').trim();
+    secciones.oracion   = (json.oracion   || json['oración']   || json.oracion_final || '').trim();
 
-  if (mV) secciones.versiculo = mV[1].trim();
-  if (mR) secciones.reflexion = mR[1].trim();
-  if (mO) secciones.oracion   = mO[1].trim();
-
-  // Fallback: si alguna sección quedó vacía, intentar por posición en el texto
-  if (!secciones.versiculo || !secciones.reflexion || !secciones.oracion) {
-    // Dividir por líneas que parezcan títulos (todo mayúsculas o con palabras clave)
-    const bloques = textoNorm.split(/\n(?=[A-ZÁÉÍÓÚÑ]{4,}[\s\S]{0,30}\n)/);
-    bloques.forEach(bloque => {
-      const lineas = bloque.trim().split('\n');
-      const titulo = lineas[0].toUpperCase();
-      const contenido = lineas.slice(1).join('\n').trim();
-      if (!contenido) return;
-      if (titulo.includes('VERS') && !secciones.versiculo)   secciones.versiculo = contenido;
-      if (titulo.includes('REFLEX') && !secciones.reflexion) secciones.reflexion = contenido;
-      if (titulo.includes('ORACI') && !secciones.oracion)    secciones.oracion   = contenido;
-    });
-  }
-
-  // Si aún hay secciones vacías, loguear el texto crudo para diagnóstico
-  if (!secciones.reflexion || !secciones.oracion) {
-    console.warn('Secciones incompletas. Texto crudo de Gemini:', texto);
+    console.log('Secciones parseadas:', secciones);
+  } catch (e) {
+    console.error('Error al parsear JSON:', e.message);
+    console.error('Texto que falló:', texto);
   }
 
   return secciones;
@@ -351,12 +320,9 @@ window.regenerarDevocional = regenerarDevocional;
 window.cambiarApiKey       = cambiarApiKey;
 
 // ---- ARRANCAR AL CARGAR LA PÁGINA ----
-// Limpiar caché si hay devocional guardado con secciones vacías
 document.addEventListener('DOMContentLoaded', () => {
-  const devGuardado = localStorage.getItem('bib_devocional_hoy');
-  if (devGuardado && (!devGuardado.includes('REFLEXIÓN') && !devGuardado.includes('REFLEXION'))) {
-    localStorage.removeItem('bib_devocional_hoy');
-    localStorage.removeItem('bib_devocional_fecha');
-  }
+  // Limpiar caché para forzar regeneración con el parser nuevo
+  localStorage.removeItem('bib_devocional_hoy');
+  localStorage.removeItem('bib_devocional_fecha');
   generarDevocional();
 });
