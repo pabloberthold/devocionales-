@@ -429,6 +429,22 @@ body {
   margin: 0;
 }
 
+.dev-parrafo {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-texto);
+  margin: 0 0 0.9rem;
+}
+
+.dev-parrafo:last-child { margin-bottom: 0; }
+
+.dev-reflexion-body { }
+
+.dev-oracion-body .dev-parrafo {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+}
+
 .dev-oracion-texto {
   font-family: 'Lora', Georgia, serif;
   font-style: italic;
