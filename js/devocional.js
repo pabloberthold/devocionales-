@@ -102,8 +102,10 @@ REGLAS IMPORTANTES:
 - Cada oración debe ser corta: máximo 12 palabras.
 - Escribe como si le hablaras a un amigo querido.
 - Sin palabras difíciles ni términos de teología.
+- NO uses markdown. NO uses asteriscos, guiones, almohadillas ni ningún símbolo de formato.
+- Escribe solo texto plano.
 
-Estructura exacta (usa estos títulos tal como están):
+Usa EXACTAMENTE esta estructura, con los títulos en mayúsculas tal como están:
 
 VERSÍCULO DEL DÍA
 [Escribe UN versículo de la Biblia Reina Valera 1960. Incluí el libro, capítulo y versículo.]
@@ -114,7 +116,7 @@ REFLEXIÓN
 ORACIÓN
 [Escribe exactamente 4 oraciones en primera persona (yo). Que sea una oración para hablar con Dios. Sencilla y del corazón.]
 
-No escribas nada más. Solo las tres secciones con sus títulos.`;
+No escribas nada más. Solo las tres secciones con sus títulos en mayúsculas.`;
 }
 
 // ---- LLAMAR A GEMINI ----
@@ -151,17 +153,52 @@ async function llamarGemini(apiKey) {
 function parsearDevocional(texto) {
   const secciones = { versiculo: '', reflexion: '', oracion: '' };
 
-  const partes = texto.split(/\n(?=VERSÍCULO DEL DÍA|REFLEXIÓN|ORACIÓN)/i);
+  // Limpiar markdown que Gemini 2.5 suele agregar: **texto**, ## títulos, * listas
+  const limpiar = t => t
+    .replace(/\*\*(.*?)\*\*/g, '$1')   // negrita **texto**
+    .replace(/\*(.*?)\*/g, '$1')        // cursiva *texto*
+    .replace(/^#{1,4}\s+/gm, '')        // títulos ## ###
+    .replace(/^[\*\-]\s+/gm, '')        // listas con * o -
+    .trim();
 
-  partes.forEach(parte => {
-    const lineas = parte.trim().split('\n');
-    const titulo = lineas[0].trim().toUpperCase();
-    const contenido = lineas.slice(1).join('\n').trim();
+  // Normalizar el texto: quitar asteriscos de títulos, unificar acentos
+  const textoNorm = limpiar(texto)
+    .replace(/VERSICULO/gi, 'VERSÍCULO')
+    .replace(/ORACION/gi, 'ORACIÓN')
+    .replace(/REFLEXION/gi, 'REFLEXIÓN');
 
-    if (titulo.includes('VERS')) secciones.versiculo = contenido;
-    else if (titulo.includes('REFLEX')) secciones.reflexion = contenido;
-    else if (titulo.includes('ORACI')) secciones.oracion = contenido;
-  });
+  // Buscar cada sección con regex flexible (acepta mayúsculas, minúsculas, con/sin tilde)
+  const reVersiculo = /VERS[IÍ]CULO DEL D[IÍ]A[\s\S]*?\n([\s\S]*?)(?=\nREFLEX|\nORAC|$)/i;
+  const reReflexion = /REFLEX[IÓO]N[\s\S]*?\n([\s\S]*?)(?=\nORAC|$)/i;
+  const reOracion   = /ORACI[OÓ]N[\s\S]*?\n([\s\S]*?)$/i;
+
+  const mV = textoNorm.match(reVersiculo);
+  const mR = textoNorm.match(reReflexion);
+  const mO = textoNorm.match(reOracion);
+
+  if (mV) secciones.versiculo = mV[1].trim();
+  if (mR) secciones.reflexion = mR[1].trim();
+  if (mO) secciones.oracion   = mO[1].trim();
+
+  // Fallback: si alguna sección quedó vacía, intentar por posición en el texto
+  if (!secciones.versiculo || !secciones.reflexion || !secciones.oracion) {
+    // Dividir por líneas que parezcan títulos (todo mayúsculas o con palabras clave)
+    const bloques = textoNorm.split(/\n(?=[A-ZÁÉÍÓÚÑ]{4,}[\s\S]{0,30}\n)/);
+    bloques.forEach(bloque => {
+      const lineas = bloque.trim().split('\n');
+      const titulo = lineas[0].toUpperCase();
+      const contenido = lineas.slice(1).join('\n').trim();
+      if (!contenido) return;
+      if (titulo.includes('VERS') && !secciones.versiculo)   secciones.versiculo = contenido;
+      if (titulo.includes('REFLEX') && !secciones.reflexion) secciones.reflexion = contenido;
+      if (titulo.includes('ORACI') && !secciones.oracion)    secciones.oracion   = contenido;
+    });
+  }
+
+  // Si aún hay secciones vacías, loguear el texto crudo para diagnóstico
+  if (!secciones.reflexion || !secciones.oracion) {
+    console.warn('Secciones incompletas. Texto crudo de Gemini:', texto);
+  }
 
   return secciones;
 }
@@ -314,4 +351,12 @@ window.regenerarDevocional = regenerarDevocional;
 window.cambiarApiKey       = cambiarApiKey;
 
 // ---- ARRANCAR AL CARGAR LA PÁGINA ----
-document.addEventListener('DOMContentLoaded', generarDevocional);
+// Limpiar caché si hay devocional guardado con secciones vacías
+document.addEventListener('DOMContentLoaded', () => {
+  const devGuardado = localStorage.getItem('bib_devocional_hoy');
+  if (devGuardado && (!devGuardado.includes('REFLEXIÓN') && !devGuardado.includes('REFLEXION'))) {
+    localStorage.removeItem('bib_devocional_hoy');
+    localStorage.removeItem('bib_devocional_fecha');
+  }
+  generarDevocional();
+});
